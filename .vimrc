@@ -31,43 +31,27 @@ call plug#begin('~/.vim/plugged')
 
 " Plugins from github repos:
 
-" Override configs by directory 
-Plug 'arielrossanigo/dir-configs-override.vim'
 " Better file browser
 Plug 'scrooloose/nerdtree'
 " Code commenter
 Plug 'scrooloose/nerdcommenter'
-" Class/module browser
-Plug 'majutsushi/tagbar'
-" Code and files fuzzy finder
-Plug 'ctrlpvim/ctrlp.vim'
-" Git integration
-Plug 'motemen/git-vim'
+" Autoclose
+Plug 'Townk/vim-autoclose'
 " Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Terminal Vim with 256 colors colorscheme
-Plug 'fisadev/fisa-vim-colorscheme'
-" Autoclose
-Plug 'Townk/vim-autoclose'
-
-" Python autocompletion, go to definition.
-Plug 'davidhalter/jedi-vim'
-
+" Code and files fuzzy finder
+Plug 'ctrlpvim/ctrlp.vim'
 " Git/mercurial/others diff icons on the side of the file lines
 Plug 'mhinz/vim-signify'
-" Python and other languages code checker
-Plug 'scrooloose/syntastic'
-" Ack code search (requires ack installed in the system)
-Plug 'mileszs/ack.vim'
-
-if has('python')
-    " YAPF formatter for Python
-    Plug 'pignacio/vim-yapf-format'
-endif
-
 " Search results counter
-Plug 'vim-scripts/IndexedSearch'
+Plug 'google/vim-searchindex'
+
+
+" Terminal Vim with 256 colors colorscheme
+Plug 'fisadev/fisa-vim-colorscheme'
+" Python autocompletion, go to definition.
+Plug 'davidhalter/jedi-vim'
 
 " Tell vim-plug we finished declaring plugins, so it can load them
 call plug#end()
@@ -92,21 +76,19 @@ filetype plugin on
 filetype indent on
 
 " tabs and spaces handling
-set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-
-" tab length exceptions on some file types
-autocmd FileType html setlocal shiftwidth=4 tabstop=4 softtabstop=4
-autocmd FileType htmldjango setlocal shiftwidth=4 tabstop=4 softtabstop=4
-autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4
+set expandtab
+set autoindent
+set fileformat=unix
 
 " always show status bar
 set ls=2
 
 " incremental search
 set incsearch
+
 " highlighted search results
 set hlsearch
 
@@ -123,18 +105,39 @@ map tm :tabm
 map tt :tabnew 
 map ts :tab split<CR>
 
+" new split panes
+set splitbelow
+set splitright
+
+" split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Enable folding with the spacebar
+nnoremap <space> za
+let g:SimpylFold_docstring_preview=1
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+
+set encoding=utf-8
+set fileencodings=utf-8,euc-kr
+
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
 " Disabled by default because preview makes the window flicker
 set completeopt-=preview
-
-" save as sudo
-ca w!! w !sudo tee "%"
-
-" simple recursive grep
-nmap ,r :Ack 
-nmap ,wr :Ack <cword><CR>
-set switchbuf+=newtab
 
 " use 256 colors when possible
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
@@ -173,13 +176,6 @@ endif
 " ============================================================================
 " Plugins settings and mappings
 " Edit them as you wish.
-
-" Tagbar ----------------------------- 
-
-" toggle tagbar display
-map <F4> :TagbarToggle<CR>
-" autofocus on tagbar open
-let g:tagbar_autofocus = 1
 
 " NERDTree ----------------------------- 
 
@@ -229,15 +225,6 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 
-" Syntastic ------------------------------
-
-" show list of errors and warnings on the current file
-nmap <leader>e :Errors<CR>
-" check also when just opened the file
-let g:syntastic_check_on_open = 1
-" don't put icons on the sign column (it hides the vcs status icons of signify)
-let g:syntastic_enable_signs = 1
-
 " Jedi-vim ------------------------------
 
 " All these mappings work only for python code:
@@ -256,6 +243,7 @@ nmap ,d :tab split<CR>:call jedi#goto()<CR>
 " Don't show arguments info.
 let g:jedi#show_call_signatures = 0 
 
+
 " Autoclose ------------------------------
 " Fix to let ESC work as espected with Autoclose plugin
 let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
@@ -266,36 +254,3 @@ let g:airline_powerline_fonts = 0
 let g:airline_theme = 'bubblegum'
 let g:airline#extensions#whitespace#enabled = 0
 
-" new split panes
-set splitbelow
-set splitright
-
-" split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-"let g:syntastic_python_flake8_post_args='--ignore=E501,E114,E111,E266,W293'
-"let g:syntastic_python_checkers = ['python3']
-let g:syntastic_python_checkers = ['pylint']  " or ['flake8', 'pylint'], etc
-let g:syntastic_python_pylint_args = '-E'
-
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-
-" Enable folding with the spacebar
-nnoremap <space> za
-let g:SimpylFold_docstring_preview=1
-
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
-
-set encoding=utf-8
-set fileencodings=utf-8,euc-kr
