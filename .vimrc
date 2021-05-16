@@ -81,7 +81,7 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set autoindent
-set fileformat=unix
+" set fileformat=unix
 
 " always show status bar
 set ls=2
