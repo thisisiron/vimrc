@@ -40,6 +40,7 @@ Plug 'Townk/vim-autoclose'
 " Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
 " Code and files fuzzy finder
 Plug 'ctrlpvim/ctrlp.vim'
 " Git/mercurial/others diff icons on the side of the file lines
@@ -49,7 +50,10 @@ Plug 'google/vim-searchindex'
 
 
 " Terminal Vim with 256 colors colorscheme
-Plug 'fisadev/fisa-vim-colorscheme'
+Plug 'cocopon/iceberg.vim'
+" Airline Theme
+Plug 'gkeep/iceberg-dark'
+
 " Python autocompletion, go to definition.
 Plug 'davidhalter/jedi-vim'
 
@@ -140,12 +144,8 @@ set fileencodings=utf-8,euc-kr
 set completeopt-=preview
 
 " use 256 colors when possible
-if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-	let &t_Co = 256
-    colorscheme fisa
-else
-    colorscheme delek
-endif
+set background=dark
+colorscheme iceberg
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
@@ -251,6 +251,5 @@ let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 " Airline ------------------------------
 let g:airline_powerline_fonts = 0
-let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'icebergDark'
 let g:airline#extensions#whitespace#enabled = 0
-
