@@ -146,6 +146,7 @@ set completeopt-=preview
 " use 256 colors when possible
 set background=dark
 colorscheme iceberg
+set termguicolors
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
