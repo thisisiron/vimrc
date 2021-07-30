@@ -155,6 +155,8 @@ set scrolloff=3
 " (complete only the common part, list the options that match)
 set wildmode=list:longest
 
+set backspace=indent,eol,start
+
 " better backup, swap and undos storage
 set directory=~/.vim/dirs/tmp     " directory to place swap files in
 set backup                        " make backup files
