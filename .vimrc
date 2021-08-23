@@ -55,7 +55,20 @@ Plug 'cocopon/iceberg.vim'
 Plug 'gkeep/iceberg-dark'
 
 " Python autocompletion, go to definition.
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
+
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+"Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
+
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+
 
 " Tell vim-plug we finished declaring plugins, so it can load them
 call plug#end()
@@ -71,6 +84,39 @@ endif
 " ============================================================================
 " Vim settings and mappings
 " You can edit them as you wish
+
+"if has('python3')
+  "silent! call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+      "\ 'name': 'ultisnips',
+      "\ 'whitelist': ['*'],
+      "\ 'blacklist': ['markdown', 'rst'],
+      "\ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+      "\ }))
+"endif
+
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+      \ 'name': 'buffer',
+      \ 'whitelist': ['*'],
+      \ 'priority': 0,
+      \ 'completor': function('asyncomplete#sources#buffer#completor'),
+      \ }))
+
+" Autocomplete filesystem
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'allowlist': ['python'],
+        \ })
+endif
 
 " no vi-compatible
 set nocompatible
@@ -256,3 +302,4 @@ let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 let g:airline_powerline_fonts = 0
 let g:airline_theme = 'icebergDark'
 let g:airline#extensions#whitespace#enabled = 0
+
